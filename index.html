@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Thiệp 20/10 💖 Gửi tặng Em 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #fffafa, #ffe6ef);
+      font-family: "Mali", cursive;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --font-base: clamp(0.9rem, 3.2vw, 1.2rem);
+      --font-large: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    /* 🌸 HOA MỞ ĐẦU */
+    .flower-scene {
+      position: fixed;
+      inset: 0;
+      background: #fffafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 1s ease;
+      overflow: hidden;
+    }
+
+    .flower-scene video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border: none;
+      background-color: #fffafa;
+      z-index: 0;
+    }
+
+    .small-card {
+      position: relative;
+      margin-top: 60vh;
+      width: 120px;
+      height: 80px;
+      background: #ffe4ec;
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #c2185b;
+      cursor: pointer;
+      perspective: 800px;
+      font-weight: 600;
+      z-index: 2;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+    .card-inner { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1s ease; }
+    .small-card.opened .card-inner { transform: rotateY(180deg); }
+
+    .card-front, .card-back {
+      position: absolute; inset: 0; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; backface-visibility: hidden;
+    }
+    .card-front { background: #ffe4ec; }
+    .card-back { background: #f8bbd0; transform: rotateY(180deg); font-size: 1rem; }
+
+    .hint-text {
+      position: relative;
+      z-index: 2;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 6px 14px;
+      border-radius: 20px;
+      color: #c2185b;
+      font-size: var(--font-base);
+      font-weight: 600;
+      animation: fadeHint 1.5s ease-in-out infinite;
+    }
+    @keyframes fadeHint { 0%,100%{opacity:.6} 50%{opacity:1} }
+
+    /* 💖 Hoa rơi */
+    .heart {
+      position: absolute; top: -10px; color: #e91e63;
+      font-size: 18px; animation: fall 5s linear forwards; opacity: .85; pointer-events: none;
+    }
+    @keyframes fall { 0%{transform:translateY(0) rotate(0)} 100%{transform:translateY(100vh) rotate(360deg);opacity:0} }
+
+    /* 🌺 THIỆP CHÍNH */
+    .center-message {
+      display: none;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ffeef8, #fff6fa, #ffffff);
+      padding: 28px;
+      border-radius: 24px;
+      text-align: center;
+      color: #c2185b;
+      box-shadow: 0 20px 60px rgba(216,27,96,0.3);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: all 1s ease;
+      max-width: 90vw;
+      z-index: 5;
+    }
+    .center-message.show { opacity: 1; }
+
+    .center-message strong {
+      display: block;
+      font-size: var(--font-large);
+      background: linear-gradient(45deg, #d81b60, #f06292, #d81b60);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: gradient 3s ease infinite;
+    }
+    @keyframes gradient { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    .replay-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      background: #f48fb1;
+      color: white;
+      cursor: pointer;
+      font-size: var(--font-base);
+      transition: background .3s;
+    }
+    .replay-btn:hover { background:#ec407a; }
+
+    /* 🎁 GALLERY */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter: blur(3px); z-index:900; }
+    .gallery { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000;
+               width: min(92vw, 820px); max-height: 90vh;
+               background: linear-gradient(135deg,#fff,#fff5f8); border-radius: 22px; padding: 16px 16px 20px;
+               box-shadow: 0 25px 80px rgba(216,27,96,0.4); border: 3px solid rgba(255,255,255,.9); }
+    .gal-head { display:flex; justify-content: space-between; align-items:center; margin-bottom:8px; }
+    .gal-title { color:#c2185b; font-weight:700; font-size:1rem; }
+    .gal-close { background:transparent; border:none; font-size:1.4rem; cursor:pointer; color:#ad1457; }
+    .gal-body { position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius: 12px; }
+    #galImg { max-width:100%; max-height:62vh; border-radius:12px; transition: opacity .35s ease; object-fit:contain; }
+    .gal-caption { margin-top:12px; color:#c2185b; font-size:1rem; text-align:center; min-height: 2.6em; }
+    .nav-btn { position:absolute; top:50%; transform: translateY(-50%);
+      background: rgba(255,240,245,.9); border: 2px solid #f8bbd0; color:#ad1457;
+      width:44px; height:44px; border-radius: 50%; cursor:pointer; font-size:1.2rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(216,27,96,.25);
+    }
+    #prevBtn { left: 8px; } #nextBtn { right: 8px; }
+
+    /* 💌 QUÀ RƠI */
+    .falling-letter {
+      position: absolute; top: -100px; width: 50px;
+      animation: fall 8s linear;
+      user-select: none; z-index: 2; cursor: pointer; transition: transform .25s ease;
+    }
+    .falling-letter:hover { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(216,27,96,.5)); }
+
+    /* ⚠️ XOAY MÀN HÌNH */
+    #rotateNotice {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,240,245,0.95);
+      z-index: 3000;
+      color: #c2185b;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: 700;
+      padding-top: 40vh;
+    }
+    @media screen and (orientation: portrait) {
+      #rotateNotice { display: block; }
+      body > *:not(#rotateNotice) { display: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="rotateNotice">🔄 Hãy xoay ngang màn hình để xem thiệp rõ hơn 💕</div>
+
+  <!-- 🌸 HOA MỞ ĐẦU -->
+  <div class="flower-scene" id="flowerScene">
+    <video id="flowerVideo" src="./assets/tt1.mp4" autoplay muted playsinline></video>
+    <div class="small-card" id="smallCard">
+      <div class="card-inner">
+        <div class="card-front">💌</div>
+        <div class="card-back">Mở thiệp</div>
+      </div>
+    </div>
+    <div class="hint-text">👉 Click vào thiệp để mở 💕</div>
+  </div>
+
+  <!-- 🌺 THIỆP -->
+  <div class="center-message" id="mainCard">
+    <strong>Thiệp 20/10 💖 Gửi tặng Em 💕</strong>
+    <span id="centerText">
+      Ngày Phụ nữ Việt Nam 🌸<br>
+      Chưa phải là phụ nữ nhưng vẫn chúc em luôn xinh đẹp, mạnh mẽ và hạnh phúc mỗi ngày!!!
+    </span><br>
+    <button class="replay-btn" id="replayBtn">🔁 Xem lại từ đầu</button>
+  </div>
+
+  <!-- 🎁 GALLERY -->
+  <div class="overlay" id="overlay"></div>
+  <div class="gallery" id="gallery">
+    <div class="gal-head">
+      <div class="gal-title">Album 20/10</div>
+      <button class="gal-close" id="closeGal">✕</button>
+    </div>
+    <div class="gal-body">
+      <button class="nav-btn" id="prevBtn">‹</button>
+      <img id="galImg" src="" alt="Quà 20/10">
+      <button class="nav-btn" id="nextBtn">›</button>
+    </div>
+    <div class="gal-caption" id="galCaption">—</div>
+  </div>
+
+  <audio id="player" src="./assets/a.mp3"></audio>
+  <audio id="sfx" src="./assets/pop.mp3"></audio>
+
+  <script>
+    // 🔄 Cố gắng tự xoay ngang (Android hỗ trợ)
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock("landscape").catch(() => {});
+    }
+
+    // 💖 Hoa rơi
+    function createHeart() {
+      const h = document.createElement("div");
+      h.classList.add("heart");
+      h.textContent = Math.random() < 0.5 ? "💖" : "🌸";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.fontSize = Math.random() * 10 + 15 + "px";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 5000);
+    }
+    setInterval(createHeart, 550);
+
+    // 🌷 Mở thiệp
+    const flowerScene = document.getElementById("flowerScene");
+    const smallCard = document.getElementById("smallCard");
+    const mainCard = document.getElementById("mainCard");
+    const replayBtn = document.getElementById("replayBtn");
+
+    smallCard.addEventListener("click", () => {
+      smallCard.classList.add("opened");
+      setTimeout(() => {
+        flowerScene.style.opacity = "0";
+        setTimeout(() => {
+          flowerScene.style.display = "none";
+          mainCard.style.display = "block";
+          setTimeout(() => mainCard.classList.add("show"), 50);
+          document.getElementById("player").play().catch(()=>{});
+        }, 1000);
+      }, 1000);
+    });
+
+    replayBtn.addEventListener("click", () => {
+      mainCard.classList.remove("show");
+      setTimeout(() => {
+        mainCard.style.display = "none";
+        flowerScene.style.display = "flex";
+        setTimeout(() => flowerScene.style.opacity = "1", 50);
+      }, 450);
+    });
+
+    // 🎁 12 ảnh + text
+    const galleryData = [
+      { src: "./assets/a1.jpg",  text: "Những bông hoa hồng phấn thay lời muốn nói: Em thật dịu dàng và đáng yêu! 🌷" },
+      { src: "./assets/a6.jpg",  text: "Khoảnh khắc đời thường cũng hóa đẹp khi có nụ cười của em 💖" },
+      { src: "./assets/a2.jpg",  text: "Mong mỗi ngày em đều là một đoá hoa nở rộ – hãy cứ rực rỡ như thế nhé! ✨" },
+      { src: "./assets/a7.jpg",  text: "Dìu dịu là gió, an yên là bạn – mong bình yên theo em thật lâu 🌿" },
+      { src: "./assets/a3.jpg",  text: "Hãy luôn mạnh mẽ, tử tế và truyền cảm hứng cho mọi người em nhé 🌸" },
+      { src: "./assets/a8.jpg",  text: "Ngày nào cũng tươi đẹp – khi em mỉm cười, cả bầu trời cũng ngọt ngào hơn ☀️" },
+      { src: "./assets/a4.jpg",  text: "Chúc 20/10 của em ngập tràn yêu thương, có hoa và những điều ngọt ngào 💗" },
+      { src: "./assets/a9.jpg",  text: "Đi qua bao khó khăn, áp lực, vẫn mong em luôn vững vàng và hạnh phúc 🎀" },
+      { src: "./assets/a5.jpg",  text: "EM là món quà tuyệt vời nhất mà cuộc sống mang lại – luôn luôn là thế 🎁" },
+      { src: "./assets/a10.jpg", text: "Mong bình an và may mắn luôn ở bên, trên mọi nẻo đường em đi 🍀" },
+      { src: "./assets/a11.jpg", text: "Xin dành tặng em thật nhiều yêu thương – hôm nay và mãi về sau 💞" },
+      { src: "./assets/a12.jpg", text: "Chúc em luôn rạng rỡ, như bông hoa nở đúng mùa – đẹp nhẹ nhàng mà bền lâu 🌷" }
+    ];
+
+    const overlay = document.getElementById("overlay");
+    const galleryEl = document.getElementById("gallery");
+    const galImg = document.getElementById("galImg");
+    const galCap = document.getElementById("galCaption");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const closeGal = document.getElementById("closeGal");
+    const sfx = document.getElementById("sfx");
+    let galIndex = 0;
+
+    function openGallery(start = 0) {
+      galIndex = start % galleryData.length;
+      renderGallery();
+      overlay.style.display = "block";
+      galleryEl.style.display = "block";
+      try { sfx.play(); } catch {}
+    }
+
+    function closeGallery() {
+      galleryEl.style.display = "none";
+      overlay.style.display = "none";
+    }
+
+    function renderGallery() {
+      const { src, text } = galleryData[galIndex];
+      galImg.style.opacity = "0";
+      setTimeout(() => {
+        galImg.src = src;
+        galImg.onload = () => galImg.style.opacity = "1";
+        galCap.textContent = text;
+      }, 150);
+    }
+
+    function nextImg() { galIndex = (galIndex + 1) % galleryData.length; renderGallery(); }
+    function prevImg() { galIndex = (galIndex - 1 + galleryData.length) % galleryData.length; renderGallery(); }
+
+    nextBtn.addEventListener("click", nextImg);
+    prevBtn.addEventListener("click", prevImg);
+    closeGal.addEventListener("click", closeGallery);
+    overlay.addEventListener("click", closeGallery);
+
+    // 💥 Nổ tim
+    function createExplosion(x, y) {
+      for (let i = 0; i < 6; i++) {
+        const h = document.createElement("div");
+        h.textContent = Math.random() < 0.5 ? "💖" : "🌸";
+        h.style.position = "absolute"; h.style.left = x + "px"; h.style.top = y + "px";
+        h.style.fontSize = (Math.random() * 10 + 16) + "px";
+        h.style.transition = "all 1s ease-out"; h.style.pointerEvents = "none";
+        document.body.appendChild(h);
+        setTimeout(() => {
+          h.style.transform = `translate(${(Math.random()-0.5)*220}px, ${(Math.random()-0.5)*220}px)`;
+          h.style.opacity = "0";
+        }, 10);
+        setTimeout(() => h.remove(), 1000);
+      }
+    }
+
+    // 💌 Quà rơi
+    function createFallingGift() {
+      const letter = document.createElement("img");
+      const imgs = ["./assets/letters.png","./assets/q3.png","./assets/h1.png"];
+      letter.src = imgs[Math.floor(Math.random() * imgs.length)];
+      letter.classList.add("falling-letter");
+      letter.style.left = Math.random() * (window.innerWidth - 50) + "px";
+      letter.addEventListener("click", (e) => {
+        createExplosion(e.pageX, e.pageY);
+        openGallery(galIndex);
+      });
+      document.body.appendChild(letter);
+      setTimeout(() => letter.remove(), 8000);
+    }
+    setInterval(createFallingGift, 1200);
+  </script>
+</body>
+</html>
